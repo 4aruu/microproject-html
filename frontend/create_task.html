@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Task</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            background-image: url('blue background.avif'); /* Set your background image here */
+            background-size: cover; /* Make the image cover the entire background */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #333;
+        }
+
+        .task-form {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            border: 1px solid #283f83;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background for better readability */
+        }
+
+        .task-form h2 {
+            text-align: center;
+            color: #183168;
+            margin-bottom: 1.5rem;
+        }
+
+        .task-form label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .task-form input, .task-form select, .task-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border: 1px solid #2d3682;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        .task-form textarea {
+            resize: none;
+        }
+
+        .task-form button {
+            margin-top: 1.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #183168;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .task-form button:hover {
+            background-color: #1e788a;
+        }
+
+        /* Back button styling */
+        .backbtn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 50px;
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            background-color: transparent;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        .backbtn:hover {
+            text-transform: uppercase;
+            color: white;
+            background-color: #2b58ba;
+            font-weight: bold;
+            transition: ease-in 0.2s;
+        }
+    </style>
+</head>
+<body>
+    <a href="home_page.html"><button class="backbtn"> Back </button></a>
+
+    <div class="task-form">
+        <h2>Create a New Task</h2>
+        <label for="task-name">Task Name</label>
+        <input type="text" id="task-name" placeholder="Enter task name" required>
+
+        <label for="task-desc">Task Description</label>
+        <textarea id="task-desc" rows="4" placeholder="Enter task description..."></textarea>
+
+        <label for="task-priority">Priority</label>
+        <select id="task-priority">
+            <option value="select">--Select task priority--</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>
+
+        <label for="task-deadline">Deadline</label>
+        <input type="date" id="task-deadline" required>
+
+        <button onclick="addTask()">Add Task</button>
+        <a href="view_tasks.html">Go to Task List</a>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskName = document.getElementById("task-name").value;
+            const taskDesc = document.getElementById("task-desc").value;
+            const taskPriority = document.getElementById("task-priority").value;
+            const taskDeadline = document.getElementById("task-deadline").value;
+
+            // Check if all required fields are filled
+            if (!taskName || taskPriority === "select" || !taskDeadline) {
+                alert("Please complete all required fields.");
+                return;
+            }
+
+            // Create task object to send to the backend
+            const task = {
+                title: taskName,
+                description: taskDesc,
+                priority: taskPriority,
+                status: "pending", 
+                deadline: taskDeadline  // Send the deadline
+            };
+
+            // Send the task to the backend via fetch
+            fetch('http://localhost:5550/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(task),  // Convert task object to JSON format
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("Task added successfully!");
+                console.log("Task saved:", data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to add task. Please try again.");
+            });
+
+            // Clear form inputs
+            document.getElementById("task-name").value = "";
+            document.getElementById("task-desc").value = "";
+            document.getElementById("task-priority").value = "select";
+            document.getElementById("task-deadline").value = "";
+        }
+    </script>
+
+</body>
+</html>
