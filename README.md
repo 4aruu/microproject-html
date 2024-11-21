@@ -1,6 +1,4 @@
-Here’s an updated version of your `README.md` file with the requested sections:
-
----
+ 
 
 # **Microproject-HTML**  
 ## **Task Prioritization App**  
@@ -60,5 +58,4 @@ The Task Prioritization App helps users efficiently manage their daily tasks. Us
 This project is licensed under the **MIT License**. Feel free to use, modify, and distribute the code with proper attribution. For more details, check the [LICENSE](LICENSE) file.
 
 ---
-
-Feel free to copy and paste this into your `README.md` file. Let me know if you need further adjustments!
+ 
